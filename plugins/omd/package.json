@@ -1,0 +1,11 @@
+{
+  "name": "omd-skill-runtime",
+  "private": true,
+  "description": "Optional browser measurement dependency. Core helpers use only Node built-ins.",
+  "engines": {
+    "node": ">=22"
+  },
+  "optionalDependencies": {
+    "playwright-core": "1.61.1"
+  }
+}

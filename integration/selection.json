@@ -1,0 +1,69 @@
+{
+  "name": "omd",
+  "skills": [
+    "omd-apply",
+    "omd-autopilot",
+    "omd-designer-review",
+    "omd-feel",
+    "omd-final-qa",
+    "omd-harness",
+    "omd-humanize",
+    "omd-learn",
+    "omd-orchestrator",
+    "omd-remember",
+    "omd-restraint",
+    "omd-slop-audit"
+  ],
+  "agents": [
+    "omd-a11y-auditor",
+    "omd-asset-curator",
+    "omd-critic",
+    "omd-design-system-architect",
+    "omd-designer-review",
+    "omd-final-qa",
+    "omd-humanizer",
+    "omd-master",
+    "omd-microcopy",
+    "omd-orchestrator",
+    "omd-persona-tester",
+    "omd-slop-auditor",
+    "omd-ui-junior",
+    "omd-ux-engineer",
+    "omd-ux-researcher",
+    "omd-ux-writer"
+  ],
+  "helpers": [
+    "scripts/ctx-prime.cjs",
+    "scripts/design-council-prime.cjs",
+    "scripts/design-council-handoff.cjs",
+    "scripts/design-council-reconcile.cjs",
+    "scripts/design-harness-context-plan.cjs",
+    "scripts/autopilot-council-plan.cjs",
+    "scripts/autopilot-council-reconcile.cjs",
+    "scripts/autopilot-mission.cjs",
+    "scripts/design-system-plan.cjs",
+    "scripts/prepare-design-md-core-review.cjs",
+    "scripts/compile-design-md-core.cjs",
+    "scripts/adopt-design-md-core.cjs",
+    "scripts/validate-project-design-system.cjs",
+    "scripts/migrate-design-md-core.cjs",
+    "scripts/rebind-design-md-core-migration.cjs",
+    "test-v2/tools/render-integrity.mjs",
+    "test-v2/tools/text-contrast.mjs"
+  ],
+  "assets": [
+    "LICENSE",
+    "spec/design-md-core-v2.md",
+    "spec/components-schema.md",
+    "spec/schema/design-md-core-manifest-v2.schema.json",
+    "spec/schema/design-system-graph-v2.schema.json",
+    "spec/schema/design-system-provenance-v2.schema.json",
+    "spec/schema/design-system-coverage-v2.schema.json",
+    "spec/schema/design-md-core-adoption-review-v2.schema.json",
+    "spec/schema/design-md-core-adoption-receipt-v2.schema.json",
+    "spec/schema/design-md-core-project-checkpoint-v2.schema.json"
+  ],
+  "optionalDependencies": {
+    "playwright-core": "1.61.1"
+  }
+}

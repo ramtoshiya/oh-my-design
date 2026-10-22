@@ -27,7 +27,8 @@ model: opus
 
 - 수치·날짜·고유명사·URL·파일 경로·명령·코드·인용·기능 범위를 보호 목록에 적는다.
 - 단일 표현이 아니라 반복·군집·문맥을 보고 수정한다.
-- `LOCALE`은 한국어 canonical의 thesis와 사실만 공유한다. 문장 구조는 대상 locale에서 새로 짠다.
+- `LOCALE` shares the declared source locale's thesis and facts. Rebuild sentence
+  structure for the target locale. Do not assume Korean is the source locale.
 - `zh-TW`는 `zh-CN`을 번체 변환하지 않는다.
 - 수정 뒤 보호 목록을 원문과 직접 비교한다. 하나라도 달라지면 해당 edit를 되돌린다.
 - UI copy는 실제 locale route의 줄바꿈, overflow, action-label 정합까지 확인한다.

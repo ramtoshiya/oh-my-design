@@ -23,8 +23,9 @@ Execute the 8 audit categories (§1.1–§1.8 of skill). Every issue must includ
 - Verbatim evidence quote
 - Specific fix suggestion
 
-**Contrast (§1.7) is measured, never estimated.** Run `omd check contrast <page.html>` (in this repo,
-`node test-v2/tools/text-contrast.mjs`) and quote its numbers. If you cannot run it, say so as a WARN —
+**Contrast (§1.7) is measured, never estimated.** Run
+`node "$OMD_ROOT/test-v2/tools/text-contrast.mjs" <page.html>` and quote its numbers.
+If you cannot run it, say so as a WARN —
 an unrun check is not a pass. **Overlay occlusion (§1.8) is judged on the first paint at mobile width.**
 
 ## Output

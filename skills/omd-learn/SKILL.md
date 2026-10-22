@@ -51,9 +51,10 @@ spacing (1 pending):
    heading이나 표를 직접 편집하지 않는다.
 3. Portable-only Core, legacy 13/15/16-section, unmarked 문서이면 설치된
    provider-free migrator로 별도 fresh staging directory에 migration을 실행한다.
-   public CLI가 있으면 `omd design-md migrate DESIGN.md --out-dir
-   <fresh-migration-dir>`를 사용한다. helper가 없으면 직접 편집으로 우회하지 말고
-   stale install을 보고한다.
+   Use the installed helper from the user's project directory:
+   `node "$OMD_ROOT/scripts/migrate-design-md-core.cjs" --input DESIGN.md --check`,
+   then `node "$OMD_ROOT/scripts/migrate-design-md-core.cjs" --input DESIGN.md --write --out-dir <fresh-migration-dir>`.
+   A missing helper blocks staging. Do not edit the source as a workaround.
 4. report의 `dropped_segments=0`, `synthetic_product_values_added=0`,
    `projection_roundtrip_equal=true`, `source_reconstruction_equal=true`,
    `opaque_extension_preserved=true`가 모두 확인되어야 계속한다.
@@ -64,6 +65,16 @@ spacing (1 pending):
 5. staging에서만 수정하고 원본 bytes, source hash, migration report를
    content-addressed rollback artifact로 남긴다. 실패 시 root 파일을 건드리지
    않는다.
+
+If approved preference edits change a migrated candidate graph, rebind the
+candidate report without promoting authority before exact review:
+
+```bash
+node "$OMD_ROOT/scripts/rebind-design-md-core-migration.cjs" --candidate-dir <fresh-migration-dir> --graph <edited-graph> --provenance <provenance> --coverage <coverage> --out-dir <fresh-rebound-dir>
+```
+
+Use the rebound graph, sidecars, and migration report as review inputs. The
+source and opaque lossless ledger remain preserved. Rebinding is not approval.
 
 ### 3.2 scope → Core graph path
 

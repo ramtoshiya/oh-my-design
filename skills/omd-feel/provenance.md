@@ -1,7 +1,7 @@
 # omd:feel — Provenance & Methodology
 
-**Date:** 2026-06-23  
-**What this is:** the evidence layer behind [`reference.md`](./reference.md). Every quantified rule traces to a source and a provenance tier, so an AI (or a reviewer) can tell a *spec gate* from a *taste heuristic*. The full rule bodies (default/range/anti-pattern/machine_check) live in `reference.md`; this file adds **where each number comes from**.  
+**Date:** 2026-06-23
+**What this is:** the evidence layer behind [`reference.md`](./reference.md). Every quantified rule traces to a source and a provenance tier, so an AI (or a reviewer) can tell a *spec gate* from a *taste heuristic*. The full rule bodies (default/range/anti-pattern/machine_check) live in `reference.md`; this file adds **where each number comes from**.
 **Seed:** Jakub Krehel, *Details That Make Interfaces Feel Better* / `jakubkrehel/make-interfaces-feel-better` (https://jakub.kr/writing/details-that-make-interfaces-feel-better).
 
 ## Methodology

@@ -1,0 +1,6 @@
+name: omd
+description: Portable design workflows and advisory preference hooks
+provides_hooks:
+  - pre_llm_call
+  - transform_tool_result
+  - post_llm_call

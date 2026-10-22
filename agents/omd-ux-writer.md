@@ -197,7 +197,9 @@ next-step prompt (사용자가 그대로 따라 할 수 있는 형태):
 - **항상 verbatim 인용 후 평가**. paraphrase 후 평가하면 사용자가 검증 못 함.
 - **근거를 추측하지 말 것**. "느낌상 약함" 금지. 위 8 체크리스트 항목 중 어느 것에 fail했는지 명시.
 - **대안은 항상 *왜*가 따라붙어야 한다**. "옵션 A가 더 좋아요"만 쓰면 NoOp.
-- **DESIGN.md `content-locales`가 없으면 일반 원칙만 사용**하고 사용자에게 "voice spec이 있으면 더 정확합니다 — omd:init부터 가실래요?" 안내.
+- If DESIGN.md `content-locales` is absent, label advice as generic and keep
+  unknown voice facts absent. Offer `omd-apply`'s project-system setup only when
+  the user wants a system, without expanding a narrow repair automatically.
 
 ## omd-microcopy와의 관계
 

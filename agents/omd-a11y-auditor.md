@@ -61,8 +61,12 @@ curl -s -o /dev/null -w "%{http_code}" -L --max-time 10 "<URL>"
 If `mcp__playwright__*` tools available AND wireframes have a renderable preview:
 
 ```bash
-# Requires axe-core npm package — check first
-npx --yes @axe-core/cli@latest <URL> --reporter v2 > eval/axe-output.json 2>&1 || echo "axe-core unavailable"
+# Use only an already available executable. Never fetch packages implicitly.
+if command -v axe >/dev/null 2>&1; then
+  axe <URL> --reporter v2 > eval/axe-output.json 2>&1
+else
+  printf '%s\n' 'axe-core unavailable'
+fi
 ```
 
 If unavailable, mark this check as `skipped: "axe-core requires Playwright + rendered HTML"`.
@@ -70,7 +74,11 @@ If unavailable, mark this check as `skipped: "axe-core requires Playwright + ren
 ### Check 4 — lighthouse (if available)
 
 ```bash
-npx --yes lighthouse <URL> --only-categories=accessibility --output=json --output-path=eval/lighthouse.json --chrome-flags="--headless" 2>/dev/null || echo "lighthouse unavailable"
+if command -v lighthouse >/dev/null 2>&1; then
+  lighthouse <URL> --only-categories=accessibility --output=json --output-path=eval/lighthouse.json --chrome-flags="--headless"
+else
+  printf '%s\n' 'lighthouse unavailable'
+fi
 ```
 
 Pass if accessibility score ≥ 90.

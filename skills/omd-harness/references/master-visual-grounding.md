@@ -10,8 +10,9 @@ need this file.
    `screenshots/hero-desktop.png` as an image before Component phase. Read
    `structure.json`, `tokens.json`, and `fonts.json` as supporting evidence.
 2. `surface_signal` wins when it conflicts with captured marketing composition.
-   Live overrides may adjust observable web tokens; canonical DESIGN.md remains
-   authoritative for voice, principles, and motion philosophy.
+   Captures are evidence only. No live override changes project tokens until
+   graph-first approval admits it. The valid graph or standalone DESIGN.md
+   remains authoritative for voice, principles, tokens, and motion philosophy.
 3. A font may be rendered only when it is officially confirmed for the relevant
    surface. `live_observed: true` requires its supplied `html_link`. A known but
    unloadable face keeps metadata and loses only the specimen. Never substitute
@@ -28,9 +29,10 @@ need this file.
    name. If no name exists, ask once when naming materially matters; otherwise
    use one clearly replaceable placeholder token consistently in title, hero,
    and footer. Do not synthesize a generic SVG logo.
-3. Use `omd-asset-fetch` for the current verified asset catalog, license,
-   attribution, URL liveness, and fallback sequence. This file intentionally
-   does not duplicate CDN URLs or timestamps.
+3. Use supplied or user-approved assets. Verify license, attribution, availability,
+   and URL liveness before use. The asset curator may advise from those sources,
+   but no asset catalog or separate fetching skill is required. An unresolved
+   source stays unresolved rather than becoming an invented CDN URL.
 4. If every verified asset source fails, use a labeled brand-color placeholder.
    Do not hand-draw character SVGs. Inline SVG is limited to data visualization
    and known icon-library glyphs.

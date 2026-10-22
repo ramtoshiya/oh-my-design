@@ -15,7 +15,7 @@ artifact를 받아 brand의 DESIGN.md 기준으로 visual / brand consistency를
 ## 0. 필수 입력
 
 - `artifact_path`: HTML, MD, JSX, TSX 중 하나
-- `design_md_path`: 해당 브랜드의 `references/<id>/DESIGN.md` 또는 프로젝트 루트 `DESIGN.md`
+- `design_md_path`: the project's DESIGN.md or an explicitly supplied system contract
 - (선택) `viewport`: `mobile` | `desktop` | `both` (default: both)
 
 이 두 입력이 없으면 BLOCK으로 즉시 종료.
@@ -77,7 +77,7 @@ T3-3 레인 A에서 두 평가자가 합의한 결함 19건 중 11건이 CONTRAS
 사진·그라데이션 위 헤드라인, 회색 메타 텍스트가 반복 원인이다. 이 카테고리는 **추정하지 않는다** —
 숫자를 내고, 그 숫자를 이슈 본문에 적는다.
 
-- 렌더된 페이지가 있으면 `omd check contrast <page.html>`(레포에서는 `node test-v2/tools/text-contrast.mjs`)를
+- 렌더된 페이지가 있으면 `node "$OMD_ROOT/test-v2/tools/text-contrast.mjs" <page.html>`를
   돌려 그 출력을 근거로 삼는다. 이 도구는 **명목 색(computed color) 대 실제 배경 픽셀**로 재고,
   안티앨리어싱된 글리프 가장자리 픽셀로 평균을 내지 않는다.
 - 본문 텍스트 < 4.5:1 → BLOCK · 대형 텍스트(≥24px 또는 ≥19px bold)·필수 UI 경계·아이콘 < 3:1 → BLOCK

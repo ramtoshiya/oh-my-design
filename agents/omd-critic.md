@@ -103,11 +103,12 @@ Phases NOT in this list must be carried forward unchanged. Do not surface-patch.
 
 ## 4. omd:remember entries (required)
 
-The master must invoke the installed `omd:remember` skill once per root-cause
-finding, with the affected artifact path as context. If the host has no explicit
-skill-invocation surface, follow the installed skill schema and append the same
-scoped entries to `.omd/preferences.md`. Never call a nonexistent
-`omd remember` shell command.
+Explicit user corrections are recorded with the installed `omd:remember` skill
+and the affected artifact path. Critic-inferred root causes are review candidates,
+not user preferences. Ask at most one batched consent question per run before
+recording them with `signal: review`, `confidence: inferred`, `status: pending`.
+If the host lacks skill invocation, read the bundled remember procedure and
+follow its schema. Never run a shell command or fold preferences automatically.
 
 ## 5. Fragility watchlist (next iteration)
 

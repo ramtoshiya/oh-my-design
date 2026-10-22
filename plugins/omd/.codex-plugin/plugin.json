@@ -1,0 +1,6 @@
+{
+  "name": "omd",
+  "description": "Graph-first project design, preferences, bounded delivery, and evidence-based review.",
+  "license": "MIT",
+  "hooks": "./hooks/codex.json"
+}

@@ -21,6 +21,13 @@ OmD에서 **AI slop**은 “AI가 만든 화면”이라는 출처 판정이 아
 2. 실제 사용자 journey와 대상 route
 3. [`references/pattern-catalog.md`](./references/pattern-catalog.md)
 4. 출처·라이선스 경계가 필요하면 [`references/sources.md`](./references/sources.md)
+5. Before a UI generation or repair verdict, read the complete numbered
+   [`slop-gates.md`](../omd-autopilot/references/slop-gates.md),
+   [`component-craft.md`](../omd-autopilot/references/component-craft.md), and
+   [`preset contracts`](../omd-autopilot/references/presets/INDEX.md).
+   Preserve every G/GS gate ID and report hits by number. These are system and
+   quality gates, not a probability that AI wrote the surface. Do not summarize
+   away gates or bypass the caller's authority and same-route proof requirements.
 
 판정 우선순위는 `사용자 의도 > DESIGN.md > 실제 제품 정보 구조 > 접근성·플랫폼 요구 > slop taxonomy`다.
 

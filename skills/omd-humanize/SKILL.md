@@ -13,7 +13,8 @@ description: "제품 문서·UX 카피·랜딩 카피를 KO/EN/JA/ZH-CN/ZH-TW �
 - 한국어 `ko`, 영어 `en`, 일본어 `ja`, 중국어 간체 `zh-CN`, 대만 번체 `zh-TW`
 - `AUDIT`: 문제 구간과 이유만 보고
 - `REWRITE`: 확인된 구간을 고치고 원문과 대조
-- `LOCALE`: 한국어 canonical의 뜻과 사실을 유지하며 대상 언어에서 새로 구성
+- `LOCALE`: preserve meaning and facts from the explicitly declared source
+  locale while rebuilding natural phrasing for the requested target locale
 
 맞춤법 검사, 일반 번역, 검색엔진용 대량 변형, AI 탐지기 우회는 대상이 아니다.
 
@@ -106,9 +107,13 @@ AI 작성 확률이나 “사람이 썼음” 점수는 만들지 않는다. 이
 
 ## 다른 OmD 역할과의 관계
 
-- `omd:kr-writer`가 한국어 초안을 만들고 이 스킬이 후편집한다.
-- `omd:locale-adapter`가 locale별 원고를 만들고 이 스킬이 각 locale의 자연스러움과 의미 보존을 검증한다.
-- `omd:ux-writer`는 섹션 전략과 대안을 제안한다. 이 스킬은 선택된 카피를 최종 문장으로 정리한다.
+- The caller writes or localizes the draft using the user's brief and the
+  project's `content-locales` contract. This skill post-edits that draft.
+- Validate naturalness and meaning independently for each requested locale.
+  No separate writing or localization skill is required.
+- The `omd-ux-writer` advisory role proposes section strategy and alternatives.
+  Resolve its native invocation from the host roster (`omd:omd-ux-writer` in a
+  Claude plugin). This skill finalizes the selected copy.
 - UI 패턴까지 문제면 `omd:slop-audit`, 구현에는 `omd:apply`를 사용한다.
 
 ## 금지

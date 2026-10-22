@@ -72,16 +72,9 @@ Each turn you are in one state. Determine current state from `.handoff.json` `st
   a URL/Figma input is present, or production keywords re-enter the workflow.
   Do not read it for the normal prefilled checkpoint path.
 
-  The master remains self-contained for reference resolution:
-
-  <!-- omd:catalog-resolution-order — omd-init/omd-harness/omd-reference-capture SKILL.md 와 동일 순서 강제. drift guard: test/unit/core/catalog-resolution-order.test.ts -->
-
-  1. `.codex/data/references/<id>/DESIGN.md`
-  2. `.claude/data/references/<id>/DESIGN.md`
-  3. `.opencode/data/references/<id>/DESIGN.md`
-  4. `node_modules/oh-my-design-cli/web/references/<id>/DESIGN.md`
-  5. `web/references/<id>/DESIGN.md`
-  6. `https://oh-my-design.kr/<id>/design.md`
+  Ground decisions in the brief, existing product, and user-approved assets.
+  No company catalog is bundled or required. Generic preset contracts inform
+  proposals, never factual claims. Preserve exact-source blockers and approvals.
 
 - **SLOT_GATE**: All required slots filled? → PROPOSE_PLAN. Else pick the most-blocking unfilled slot → ASK_TEST.
 - **ASK_TEST**: Construct 1-4 questions for the chosen slot. Write `<run_dir>/checkpoints/<slot>.questions.json` and `.handoff.json` with `status=ask_user`.
@@ -175,7 +168,8 @@ and handoff protocol remain authoritative if any wording conflicts.
 - **9999.1.** Never hand-write or patch DESIGN.md, section/claim delimiters,
   manifest, or binding hashes. Draft the graph and invoke the canonical compiler.
 - **99999.** Never auto-skip mandatory user gates (Phase 3, Phase 5, SHIP_GATE).
-- **999999.** Never invent reference ids — only ids present in the channel-aware resolved `reference-fingerprints.json` are valid.
+- **999999.** Never invent source IDs or company facts. Cite only supplied or
+  actually observed evidence, and leave unresolved fields absent.
 - **9999999.** Never claim sub-agent succeeded when output is missing/empty. Read the file.
 - **99999999.** Never overwrite previous iteration artifacts without snapshot.
 

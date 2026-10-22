@@ -37,10 +37,9 @@ At conversational INTAKE read `.omd/state.md`, the last three timeline entries,
 briefly name the latest work and offer 3–4 relevant continuations. Skip this for
 a first session and for a deterministic prefilled handoff.
 
-Resolve `reference-fingerprints.json`, `reference-tags.md`, and `vocabulary.json`
-from one channel data directory. Prefer the active channel; otherwise use
-`.codex/data` → `.claude/data` → `.opencode/data` → npm package data → repo data.
-Never mix metadata from different channels.
+Ground design direction in the brief, current product, and approved assets.
+Generic component presets may guide proposals. No company catalog, metadata
+lookup, or source checkout is required. Retain unknown facts as absent.
 
 ## Slots and persona defaults
 
@@ -80,11 +79,11 @@ Never argue and never re-probe an opted-out slot.
 
 ## Vague modifiers
 
-Do not guess what “more refined”, “warmer”, or “less cramped” means. Call
-`scoreCandidatesForModifier` with the current reference, axis, and direction;
-present the top 3–4 concrete reference directions. The selected direction
-becomes `tone_seed`; record the correction through `omd:remember` or its
-`.omd/preferences.md` schema. Unmentioned axes remain unchanged.
+Do not guess what “more refined”, “warmer”, or “less cramped” means. Identify
+the affected axis and offer 3–4 concrete, evidence-grounded design directions.
+The selected direction becomes `tone_seed`. Record the correction through
+`omd:remember` using its `.omd/preferences.md` schema. Unmentioned axes remain
+unchanged. No omitted catalog-scoring function is required.
 
 For anchor-scoped feedback, identify the DESIGN.md stable anchor and artifact,
 change only that anchor, and show the local diff or visual. Three similar

@@ -147,6 +147,7 @@ UI 작업이 아니면 트리거하지 않는다. 카피·정보구조만 다루
 
 - **`omd:apply`** — 브랜드 DESIGN.md 토큰 적용. omd:feel은 그 위에서 토큰이 침묵하는 *느낌* 층을 채운다.
 - **`omd:designer-review`** — 브랜드 일관성(typo/color budget/radius scale) 감사. omd:feel AUDIT은 그 **feel 축 짝꿍**(모션 타이밍·타깃·CLS·a11y).
-- **`omd:taste`** — 사용자 *취향* 대시보드(별개 개념). 반복되는 feel 결정이 취향으로 굳으면 `omd:remember`로 흘려보낸다.
+- Repeated feel decisions may become preference candidates. Record explicit
+  corrections with `omd:remember`. Inferred review candidates require consent.
 
 > **수동 검증**: `transition: all 0.6s` + `<button class="w-5 h-5">` + `prefers-reduced-motion` 분기 없는 컴포넌트를 AUDIT하면 — BLOCK 최소 3건(transition all=GPU SPEC, 20px 타깃=WCAG SPEC, reduced-motion 누락=a11y SPEC)이 line ref와 함께 뜨고 feel-score가 그만큼 깎여야 한다.

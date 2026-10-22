@@ -29,7 +29,8 @@ folders and must never edit `DESIGN.md` or product files.
    be presented as user authority), then run
    `autopilot-mission.cjs <project-root> <run-dir> bootstrap`. This freezes the
    initial product tree and mission budgets before any product write.
-2. `AUTHORITY_GATE` — run `scripts/design-council-prime.cjs` in the run scope.
+2. `AUTHORITY_GATE` — run
+   `node "$OMD_ROOT/scripts/design-council-prime.cjs" <project-root> <run-dir>`.
    Freeze its decision ledger before any product write.
 3. `BOUNDED_COUNCIL` — dispatch no more than three evidence-required, read-only
    lanes. Do not dispatch a lane for a settled decision. A generic authorized
@@ -217,14 +218,14 @@ folders and must never edit `DESIGN.md` or product files.
    “Browser unavailable”, skipped checks, or missing screenshots must be a
    failed check, never a passing substitute.
    **Render integrity is an atomic check.** Run the deterministic checker on
-   every rendered page the mission produced — `node test-v2/tools/render-integrity.mjs <page.html…>`
-   in this repo, `omd check render <page.html…>` when installed — and bind
+   every rendered page the mission produced with
+   `node "$OMD_ROOT/test-v2/tools/render-integrity.mjs" <page.html…>` and bind
    its verdict per page into `proof.json` with the tool output as evidence
    (overflow-x, viewport escape, text clip, unreset UA margins, missing font,
    broken image, encoding). A FAIL is a failed check; a page the tool could not
    load is a failed check.
-   **Text contrast is a second atomic check.** Run `node test-v2/tools/text-contrast.mjs <page.html…>`
-   in this repo, `omd check contrast <page.html…>` when installed, on the same pages
+   **Text contrast is a second atomic check.** Run
+   `node "$OMD_ROOT/test-v2/tools/text-contrast.mjs" <page.html…>` on the same pages
    and bind its verdict into `proof.json` the same way. It measures the nominal
    computed color against the actual background pixel, so accent-on-accent text,
    headlines over photos or gradients, and grey meta text are caught before the
@@ -524,8 +525,8 @@ semantics into that stack's native idiom — never a foreign one:
 - Exact official brand request with no authoritative source → block rather
   than fabricate.
 
-Reference selection happens only after this decision and only when it supplies
-useful verified inspiration. A reference never owns product facts.
+Use the brief, current product, and approved assets after this decision.
+Verified inspiration never owns product facts. No company catalog is required.
 
 ## Evidence and unknowns
 

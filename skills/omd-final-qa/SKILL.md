@@ -15,7 +15,7 @@ artifact가 사용자에게 handoff 되기 전 마지막 게이트. **read-only*
 - `artifact_paths`: 모든 locale 파일 (예: `index.ko.md`, `index.en.md`)
 - `design_md_path`: brand DESIGN.md
 - `prior_reviews`: designer-review 보고서 경로 (있으면)
-- `voice_preset`: kr-writer가 사용한 preset_id
+- `voice_preset`: the brief or DESIGN.md `content-locales` voice contract
 - `round`: 1 또는 2 (orchestrator가 주입)
 
 ## 1. Rubric (8 items, 모두 closed checklist)
@@ -44,8 +44,8 @@ artifact가 사용자에게 handoff 되기 전 마지막 게이트. **read-only*
 - src 경로 valid (파일 존재)
 
 ### [5] Cross-locale parity
-- KR이 N H2 → 다른 locale도 N H2
-- KR이 N figure → 다른 locale도 N figure
+- Declared source locale has N H2 → each requested locale also has N H2
+- Declared source locale has N figure → each requested locale also has N figure
 - frontmatter `source_revision` 최신
 
 ### [6] Accessibility
@@ -152,7 +152,8 @@ round 2:
 ## 7. Cross-skill 의존
 
 - `omd-designer-review` 보고서 ← `prior_reviews`로 참조 (해소 여부 확인)
-- `omd-locale-adapter` 결과물 ← rubric [5]에서 검증
+- Caller-authored locale artifacts are checked by rubric [5]. No locale worker
+  is required. For one locale, verify internal parity and record that scope.
 
 ## 8. 취향 캡처 — QA → taste loop (최종 phase)
 

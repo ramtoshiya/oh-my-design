@@ -1,6 +1,6 @@
 ---
 name: omd-apply
-description: "프로젝트 DESIGN.md를 UI/시각 작업의 brand context로 적용. 컴포넌트·색상·폰트·레이아웃 수정 같은 구체적 요청과 톤·분위기 표현 — KR '좀 더 따뜻하게', EN 'make it warmer/cooler', 日本語「もう少し暖かく」, 繁體中文「更溫暖一點」 — 모두에 트리거. DESIGN.md 부재 시 omd:init 우선. 화면 전체 신규 디자인은 omd:harness, 교정 기록은 omd:remember."
+description: "프로젝트 DESIGN.md를 UI/시각 작업의 brand context로 적용. 컴포넌트·색상·폰트·레이아웃 수정과 '좀 더 따뜻하게', 'make it warmer', 「もう少し暖かく」, 「更溫暖一點」에 트리거. DESIGN.md 부재 시 brief 기반 시스템 setup을 제안. 신규 자율 디자인은 omd:autopilot, guided 디자인은 omd:harness, 교정 기록은 omd:remember."
 ---
 
 # omd:apply — Brand Context Injection + Delivery Router
@@ -49,7 +49,7 @@ description: "프로젝트 DESIGN.md를 UI/시각 작업의 brand context로 적
 | "이 인터랙션 / 모션 / 포커스 / 모바일 / 지각 성능 / 섹션별 UX 약점" | dispatch `omd-ux-engineer` | 코드 레벨 인터랙션 감사 + fix |
 | "기존 랜딩 / 메인 화면 / 페이지 *전체*를 전문가 의견으로 개선" | advisory dispatch `omd-ux-writer` + `omd-ux-engineer` (병렬) | 두 트랙 자문 후 본 에이전트가 구현 |
 | "이게 왜 안 좋은지 critique / postmortem / root cause" | dispatch `omd-critic` | 비판적 분석 |
-| "DESIGN.md 만들어 / reference 골라 / 카탈로그에서 추천" | dispatch `omd-init` skill (또는 omd-add-reference) | reference 매칭 |
+| "DESIGN.md 만들어 / 디자인 시스템 설정" | brief-grounded system setup below | project authority before tokens |
 | "preference 정리 / 누적된 교정 반영 / DESIGN.md 업데이트" | dispatch `omd-learn` skill | fold-in 로직 |
 | "이 한 줄 / 이 컬러 / 이 spacing 좀" 단발 명확 | **인라인 처리** | 분명한 단일 변경 |
 | 위 어디에도 안 맞는 자유로운 디자인 작업 | 본 에이전트가 처리 후 Phase 3 (교정 캡처) | 일반 케이스 |
@@ -184,7 +184,31 @@ specialist는 protected ledger나 visual equity ledger를 수정·완화할 권�
    reference-capture evidence is never a prescriptive tier
    ```
 
-DESIGN.md 없으면 사용자에게 알리고 omd:init 스킬 트리거. 임의 생성 금지.
+### Missing DESIGN.md: small project-system setup {:#project-system-setup}
+
+If DESIGN.md is missing, inspect the brief, current UI, real token sources,
+and user-approved assets. Ask one consequential authority question if needed:
+should these become a project system, or stay a surface-local contract?
+Do not require a reference catalog, CLI, or excluded initialization skill.
+
+- Authorized project system: use `omd-autopilot`'s system disposition and
+  [system proof contract](../omd-autopilot/references/design-system-contract.md).
+  A guided request uses
+  `omd-harness` and keeps all mandatory checkpoints.
+- Read `../omd-autopilot/references/derivation-chain.md` relative to this skill
+  directory. Derive philosophy, decision IDs, tokens, components, and layout
+  grammar from the brief and product. Generic presets are proposals, not facts.
+- Draft only graph/provenance/coverage in the run. Use the installed
+  `prepare-design-md-core-review.cjs`, `compile-design-md-core.cjs`, and
+  `adopt-design-md-core.cjs` helpers through the exact owner-approved preview,
+  checkpoint, atomic adoption, and final validation chain. Never hand-write
+  DESIGN.md, manifests, claims, or hashes. Read the bundled Core specification
+  and schemas rather than inventing required values.
+- If authority is withheld, retain only authorized surface-local decisions.
+  Keep missing exact brand facts absent. Do not claim a project system exists.
+
+Resume Phase 2 only with the resulting validated system or the explicit local
+scope. A narrow UI repair must not silently expand into a full harness run.
 
 ## Phase 2 — Brand Context 적용
 
@@ -425,7 +449,8 @@ Logged to .omd/preferences.md — say "preference 정리해줘" later to fold in
 
 ## 금지
 
-- DESIGN.md 없는데 임의 생성 금지 (사용자에게 omd:init 제안)
+- DESIGN.md 없는데 임의 생성 금지. Use the brief-grounded project-system setup
+  above and its owner-approved compiler chain.
 - 전문 역할 부재 또는 read-only 자문을 이유로 implement/change 요청을 무변경 종료 금지
 - 전문 역할 파일을 인라인으로 읽었을 때 해당 역할이 실제 실행됐다고 주장 금지
 - 교정 감지 시 "기록할까요?" 묻지 말 것 — 자동 기록 + 한 줄 알림

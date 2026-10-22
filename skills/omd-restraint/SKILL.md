@@ -14,9 +14,10 @@ user-invocable: true
 않은 화면은 블라인드 심사에서 장식 많은 페이지에 진다(tasteskill의 시험 결과). 그래서 모든 삭제는
 "그 자리에 무엇이 커지는가"를 함께 적는다. 적을 수 없으면 자르지 않는다.
 
-근거: `docs/research/2026-10-14-restraint/RESTRAINT.md`(측정·규칙 R1–R15·cut/keep/enlarge 표),
-`docs/design-excellence/scale-and-simplicity.md`(LC-52/54/55/59, LI-36/37/40), tasteskill v2(MIT, `Leonxlnx/taste-skill`)의
-공개 원칙을 의역해 배웠다. 문장을 옮기지 않았다.
+Evidence and measurement conditions are in `references/benchmarks.md` and the
+complete R1–R15 table below. Public principles from tasteskill v2 (MIT,
+`Leonxlnx/taste-skill`) are paraphrased, not copied. Research labels in the
+table identify provenance, not required local documents.
 
 ## 언제 쓰나 / 쓰지 않나
 
@@ -26,10 +27,11 @@ user-invocable: true
 - 랜딩·제품 소개·카탈로그·문서 첫 화면처럼 **방문자가 처음 보는 화면**의 양과 위계.
 
 **쓰지 않는다**
-- 브랜드 값(색·서체·radius·간격 토큰) 결정 → `omd-apply` / `omd-init`. 이 스킬은 토큰을 바꾸지 않는다.
+- 브랜드 값(색·서체·radius·간격 토큰) 결정 → `omd-apply` and its project-system setup. 이 스킬은 토큰을 바꾸지 않는다.
 - 모션 타이밍·타깃 크기·대비 같은 미시 물리 → `omd-feel`.
 - "AI가 만든 것 같다"는 패턴 진단 → `omd-slop-audit`.
-- 밀도를 일부러 올리는 쇼케이스 랜딩(LC-59 밀도 다이얼 ≥ 6) → `omd-landing` / `omd-aphrodite`가 주인. 그때도 R1·R2·R10은 유지한다.
+- Intentionally dense showcase surfaces (density dial ≥ 6) follow their approved
+  project contract. Retain R1, R2, and R10. No separate landing skill is required.
 - 대시보드·데이터 테이블·폼처럼 **밀도 자체가 기능**인 앱 화면. 여기서 R2·R4·R8 상한은 틀린 질문이다(표의 선·입력 필드 테두리는 R8에서 이미 제외).
 - 정본 레퍼런스 본문을 줄이는 일. 아래 "자르지 않는 것" 참조.
 
@@ -38,11 +40,12 @@ user-invocable: true
 1. **DESIGN.md가 이긴다.** 브랜드 토큰·컴포넌트 계약·카피 voice는 그대로. 절제는 *몇 개를, 얼마나 크게* 쓸지만 정한다.
    액센트 1개(R7)는 "DESIGN.md의 액센트를 한 곳에만"이지, 다른 액센트를 고르라는 뜻이 아니다.
 2. `.omd/preferences.md`의 pending 교정이 DESIGN.md보다 먼저다(omd-apply와 같은 규칙).
-3. `omd-landing`과의 경계 — **LC-59 밀도 다이얼 ≤ 5**(제품·카탈로그·문서·OmD 사이트)면 이 스킬의 상한이 랜딩의
-   밀도 바닥(LI-24~26)을 이긴다. **다이얼 ≥ 6**(쇼케이스)이면 랜딩 바닥이 적용되고, 여기서는 R1·R2·R10만 유지한다.
-4. **자르지 않는 것(AGENTS.md).** 정본 레퍼런스 본문, provenance, "폰트 사용 불가" 표기, JSON-LD, answer-first 요약,
-   item page의 `#use` 블록(Copy·Download·raw DESIGN.md·설치 명령·첫 프롬프트). 이것들은 *keep* 또는 *demote*(작게·뒤로)만
-   가능하다. 잘리는 것은 크롬(장식·반복·중복)뿐이다.
+3. Density boundary: dial ≤ 5 uses these upper budgets. Dial ≥ 6 follows the
+   approved showcase density floor and retains R1, R2, and R10 here.
+4. **Do not cut protected product content.** Preserve source facts, provenance,
+   unavailable-font labels, required structured data, core actions, disclosures,
+   and the user's protected behavior ledger. Keep or demote them without losing
+   information or function. Subtract decorative chrome and duplication only.
 
 ## 출처 등급 — 숫자가 얼마나 단단한가
 
@@ -97,10 +100,8 @@ R11a와 R12는 일부러 다른 자로 잰다. 빈 면적은 픽셀(무늬 없�
 판정은 코드가 아니라 렌더에서 한다. 읽은 코드에는 의도가 섞인다.
 
 ```bash
-# 설치본(npm 패키지): 어느 프로젝트에서든
-npx oh-my-design-cli check restraint <url|page.html> [--out .omd/restraint] [--json]
-# 스킬 폴더에서 직접
-node <skill>/scripts/audit.mjs <url|page.html> [--kind landing|list|doc] [--exclude "<selector>"] [--content "<selector>"]
+# Resolve <current-skill-dir> from this installed SKILL.md, not the project.
+node <current-skill-dir>/scripts/audit.mjs <url|page.html> [--out .omd/restraint] [--json] [--kind landing|list|doc] [--exclude "<selector>"] [--content "<selector>"]
 ```
 
 - 기본 폭 `1440x900,390x844`(`--widths`로 변경). 헤드리스 Playwright Chromium만 쓴다 — 사용자의 Chrome 프로필은 열지 않는다.
@@ -133,7 +134,8 @@ Keep (AGENTS.md / user need): <element> — <one-line need>
 토큰은 건드리지 않는다. 한 라운드는 다섯 걸음이고, 라운드는 최대 3번이다.
 
 1. **인벤토리(R14).** 첫 화면과 각 섹션의 요소를 표로 적고, 행마다 "사용자가 여기서 무엇이 필요한가"를 한 줄로 쓴다.
-   한 줄을 못 쓰면 그 행이 삭제 후보다. AGENTS.md의 "자르지 않는 것"은 여기서 `keep`으로 고정한다.
+   한 줄을 못 쓰면 그 행이 삭제 후보다. The protected content listed above and
+   in the caller's behavior ledger is fixed as `keep` here.
 2. **자른다.** 필요 한 줄이 없는 것, 장식 선·그리드·eyebrow·반복 배지·mono 캡션(R8·R9), 약속이 아닌 숫자 타일(R6),
    세 번째 이후 CTA(R5), 두 번째 액센트(R7). 자르는 것은 크롬이지 내용이 아니다 — 정보가 담긴 것은 `demote`(작게·아래로·다른 페이지로).
 3. **합친다(R10).** 같은 사실·같은 CTA·같은 숫자가 두 번 나오면 가장 좋은 자리 하나만 남긴다. 붙어 있는 문장 셋은 한 copy stack으로.
@@ -166,7 +168,8 @@ before → after: R2 9 → 4 · R3a 7 → 3 · R4c 140 → 48 · R11a 58% → 71
 - **omd-feel** — 미시 물리(타이밍·radius·타깃). omd-restraint는 *몇 개, 무엇이 지배하나*. 겹치지 않는다.
 - **omd-slop-audit** — "생성된 것처럼 보이는" 패턴. eyebrow·아이콘 카드 줄은 양쪽에 걸리지만 slop-audit은 *왜 생겼나*,
   이 스킬은 *몇 개이고 무엇이 커져야 하나*를 묻는다. 같은 finding을 두 번 보고하지 않는다.
-- **omd-landing / omd-aphrodite** — 밀도 다이얼로 경계(위 "우선순위" 3). 쇼케이스 랜딩의 바닥 규칙이 이 스킬의 상한과 부딪히면 다이얼이 정한다.
+- Approved showcase density floors follow the density boundary above. No sibling
+  skill is needed to apply it.
 - **omd-designer-review** — 브랜드 일관성. 색 budget은 그쪽이 DESIGN.md 대비로, R7은 첫 화면 *개수*로 본다.
 
 출처와 실측: [`references/benchmarks.md`](./references/benchmarks.md) — tasteskill.dev와 oh-my-design.kr에 이 검사기를 돌린 결과와 측정 조건.

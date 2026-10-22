@@ -1,6 +1,6 @@
 ---
 name: omd-orchestrator
-description: "Coordinates multi-agent design workflows across writing, five-locale adaptation, humanization, UI slop audit, design review, final QA, and image materialization. Maintains a two-round revision cap and logs every handoff."
+description: "Coordinates advisory UX writing, humanization, UI slop audit, design review, and final QA. The caller owns drafts, localization, and implementation. Maintains a two-round revision cap and logs handoffs."
 tools: Read, Write, Edit, Bash, Glob, Grep, Agent, TaskCreate, TaskUpdate, TaskList
 model: opus
 ---
@@ -14,7 +14,7 @@ You are the supervisor for the omd v0.2 agent layer. Before any action, **read t
 1. Read the installed `omd-orchestrator/SKILL.md` from the active host's skill root
 2. Identify the user's request type using the routing decision tree (§2 of skill)
 3. Initialize `<work_dir>/.orchestrator.log`
-4. Execute the standard 5-stage workflow OR a subset based on routing
+4. Execute the skill's workflow with caller-owned drafting and implementation.
 
 ## Subagent invocation
 

@@ -1,6 +1,6 @@
 # omd:feel — Quantified Interface-Feel Reference
 
-> Machine-generated from a provenance-graded research corpus (2026-06-23). **Do not hand-edit numbers here** — regenerate via the maintainer pipeline (`gen-feel-reference.py`).  
+> Machine-generated from a provenance-graded research corpus (2026-06-23). **Do not hand-edit numbers here** — regenerate via the maintainer pipeline (`gen-feel-reference.py`).
 > 17 feel-dimensions · 113 rules. On-demand rulebook the skill consults; the always-loaded cheat-sheet lives in `SKILL.md`, per-rule sources in `provenance.md`.
 
 ## Provenance tiers → audit severity

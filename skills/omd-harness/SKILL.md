@@ -33,37 +33,20 @@ task에서 delivery intent도 함께 고정한다.
 
 `implement`여도 mandatory checkpoint를 건너뛰지 않는다. 차이는 승인된 handoff 뒤 실제 제품 코드 통합까지 이어지는지다.
 
-## Step 1 — Channel-safe role activation + inline recovery (v1.9.0+)
+## Step 1 — Native role routing and inline recovery
 
-먼저 Agent 도구의 사용 가능 role 목록에서 `omd-master`를 확인한다. 있으면 Step 2로 간다. 없을 때는 Markdown을 임의 폴더에 복사하지 않는다. Claude와 Codex의 role schema가 다르고, `.agents/`는 Codex에서 skill 경로이지 role 경로가 아니다.
+Use the active host's registered role when available. A Claude plugin role is
+namespaced, for example `omd:omd-master`, even though its preserved role ID is
+`omd-master`. Check the actual tool roster rather than guessing an invocation ID.
+If unavailable, read `../../agents/omd-master.md` relative to this installed
+skill directory and adopt its body inline. Do not claim a separate agent ran.
+Do not copy role files, install a CLI, or ask the user to repair the host.
+Inline execution retains every phase, artifact, budget, and user checkpoint.
 
-### 1.1 — 현재 채널과 설치물 검증
-
-- 이 스킬이 `.agents/skills/omd-harness/`에서 로드됐거나 `.codex/agents/omd-master.toml`이 있으면 **Codex**다. role 파일은 `.codex/agents/omd-master.toml`이어야 하며 top-level `name`, `description`, `developer_instructions`가 모두 있어야 한다.
-- 이 스킬이 `.claude/skills/omd-harness/`에서 로드됐거나 `.claude/agents/omd-master.md`가 있으면 **Claude Code**다. role 파일은 첫 줄이 `---`인 `.claude/agents/omd-master.md`여야 한다.
-- 이 스킬이 `.opencode/skills/omd-harness/`에서 로드됐거나 `.opencode/agents/omd-master.md`가 있으면 **OpenCode**다. project role은 `.opencode/agents/omd-master.md`, global role은 `~/.config/opencode/agents/omd-master.md`이며 `mode: subagent`여야 한다.
-- 폴더가 존재한다는 이유만으로 채널을 추측하지 않는다. 둘 다 없거나 모호하면 사용자에게 현재 coding-agent 채널 하나만 확인한다.
-
-role 파일이 없거나 schema가 틀렸으면 해당 채널만 최신 설치기로 복구한다:
-
-```bash
-# <channel> = claude-code, codex 또는 opencode
-npx oh-my-design-cli@latest install-skills --agent <channel> --all
-npx oh-my-design-cli@latest doctor
-```
-
-Codex의 legacy `.codex/skills` OmD entrypoint는 최신 설치기가 안전하게 제거하고 공식 `.agents/skills` 경로로 옮긴다. 사용자 소유 파일은 삭제하지 않는다.
-
-### 1.2 — 현재 세션에서 role 목록이 stale인 경우
-
-설치 파일이 유효해도 이미 실행 중인 세션의 Agent 목록은 즉시 갱신되지 않을 수 있다. 이 경우 작업을 중단하거나 잘못된 형식으로 복사하지 말고:
-
-1. 유효한 role 파일을 Read한다. Codex는 `developer_instructions`, Claude Code는 frontmatter 뒤 body를 읽는다.
-2. 현재 main agent가 그 지침을 **inline omd-master persona**로 채택해 이번 run을 계속한다.
-3. 사용자에게는 한 줄만 알린다: `역할 파일은 복구됐고, 이번 작업은 inline으로 계속해요. 다음 세션부터 전용 role이 자동 로드됩니다.`
-4. 다음 새 세션을 위해 Codex는 project trust가 필요하고, 두 채널 모두 설치/업그레이드 후 재시작이 필요하다는 점을 마지막 handoff에 남긴다.
-
-Step 4에서 전용 role spawn이 여전히 불가능하면 inline persona가 같은 phase/state/checkpoint 계약을 직접 실행한다. 산출물이나 사용자 checkpoint를 생략하지 않는다.
+Resolve `OMD_ROOT` as the absolute directory two levels above this installed
+SKILL.md's directory. All helper examples below run from the user's project
+with `node "$OMD_ROOT/scripts/<helper>.cjs" ...`. Never resolve helpers from
+the project, a global package, or an upstream clone.
 
 ## Step 2 — Run 디렉토리 부트스트랩 (인라인 Bash)
 
@@ -157,31 +140,13 @@ reference를 고르라고 사용자에게 묻기 전에 **먼저 레포를 본�
 ### 2.5.1 — ctx-prime helper 실행
 
 ```bash
-# HELPER resolution (먼저 존재하는 것 사용):
-#   1. .codex/data/scripts/ctx-prime.cjs    ← Codex installer copy
-#   2. .claude/data/scripts/ctx-prime.cjs   ← Claude Code / Cursor installer copy
-#   3. .opencode/data/scripts/ctx-prime.cjs ← OpenCode installer copy
-#   4. node_modules/oh-my-design-cli/scripts/ctx-prime.cjs  (로컬 npm 설치)
-#   5. $(npm root -g)/oh-my-design-cli/scripts/ctx-prime.cjs (global)
-HELPER=""
-for CANDIDATE in \
-  ".codex/data/scripts/ctx-prime.cjs" \
-  ".claude/data/scripts/ctx-prime.cjs" \
-  ".opencode/data/scripts/ctx-prime.cjs"; do
-  if [ -f "$CANDIDATE" ]; then HELPER="$CANDIDATE"; break; fi
-done
-if [ -z "$HELPER" ]; then
-  OMD_DIR=$(npm root)/oh-my-design-cli
-  [ -d "$OMD_DIR" ] || OMD_DIR=$(npm root -g)/oh-my-design-cli
-  HELPER="$OMD_DIR/scripts/ctx-prime.cjs"
-fi
-[ -f "$HELPER" ] || { echo "CTX_PRIME_MISSING"; exit 0; }
-
+HELPER="$OMD_ROOT/scripts/ctx-prime.cjs"
+[ -f "$HELPER" ] || { echo "CTX_PRIME_MISSING"; exit 1; }
 node "$HELPER" "$(pwd)" "${RUN_DIR}"
 ```
 
 성공 시 `${RUN_DIR}/ctx-prime.json` 생성. ~12-50ms (typical repo).
-ctx-prime.cjs는 활성 host의 `.codex/data/scripts/`, `.claude/data/scripts/`, 또는 `.opencode/data/scripts/`에 installer가 복사하므로 패키지 dir 없이도 동작한다 (companion `context.cjs`도 같은 폴더에 함께 복사됨).
+The plugin bundles the standalone `ctx-prime.cjs` helper.
 
 `CTX_PRIME_MISSING` (모든 local/global 경로 miss) → Step 3로 직진 (legacy path).
 
@@ -351,8 +316,8 @@ options: ctx-prime.audience_hypothesis 상위 3개 → label/description 매핑
 - "View docs / Read more"
 
 **Question 4 — visual grounding:**
-- "Live reference capture (느림, 정확)" — 추천 if exit_scope=풀랜딩
-- "Catalog-only (빠름, generic)"
+- User-approved assets and observable current product evidence
+- Brief-derived generic design decisions, labeled as proposals rather than facts
 
 답을 `${RUN_DIR}/handoff/.handoff.json`에 prefilled_slots로 적재:
 
@@ -378,18 +343,19 @@ EOF
 
 ### 2.5.4 — Backward compatibility
 
-`ctx-prime.json` 누락 또는 사용자가 picker에서 "Other → 알아서 골라줘" 답하면 Step 3 (reference picker) 그대로 진행. `prefilled_slots` 없으면 master는 legacy SLOT_GATE 흐름.
+If `ctx-prime.json` is missing, inspect the brief and product directly in Step 3.
+Without prefilled slots, master uses SLOT_GATE. Do not fall back to a catalog.
 
-## Step 3 — DESIGN.md 존재 확인 + reference 의미 매칭
+## Step 3: Project design-system disposition {:#system-disposition}
 
 먼저 `council/decision-ledger.json`의 `design-system-disposition`을 읽는다.
 
-- `reuse` → 기존 root `DESIGN.md`를 사용하고 reference picker를 건너뛴다.
+- `reuse` → use the existing root DESIGN.md without reopening settled decisions.
 - `surface-local-only` → root `DESIGN.md`를 만들지 않고 현재 run의 local
-  surface contract만 사용한다. reference picker를 건너뛴다.
-- `establish` 또는 `refresh` → 아래 reference 의미 매칭을 보조 evidence로
-  사용할 수 있다. reference는 제품 사실이나 시스템 전체를 소유하지 않는다.
-- `interview` → checkpoint 답변 전에는 reference를 고르지 않는다.
+  surface contract만 사용한다. Do not promote it to a project system.
+- `establish` or `refresh` → derive proposals from the brief, product, and
+  approved assets using Step 3.1. No catalog selection is needed.
+- `interview` → wait for the actual user's answer before system decisions.
 - `blocked` → 중단한다.
 
 기존 root `DESIGN.md`를 사용하는 경우 이 시점에 read-only format
@@ -431,91 +397,26 @@ then
 mandatory
 checkpoint #2 remains the separate authorization to adopt exact frozen bytes.
 
-ledger가 없는 legacy install에서만 기존 동작처럼 프로젝트 루트에 DESIGN.md가
-없으면 reference를 직접 추천한다. 외부 API 호출 없음.
+If a legacy run has no ledger, use the same brief-grounded setup below.
+Missing DESIGN.md does not authorize inventing a system or skipping approval.
 
-### 3.1 카탈로그 로드
+### 3.1 Brief-grounded system decisions
 
-다음 data dir을 순서대로 확인해, 세 파일이 함께 있는 첫 dir에서 전부 Read한다:
+Read the user's brief, current product, supplied screenshots, existing system,
+and user-approved assets. Do not load a company catalog or ask for a catalog ID.
+For `establish` or `refresh`, derive generic design decisions from that evidence.
+Read [derivation chain](../omd-autopilot/references/derivation-chain.md),
+[component craft](../omd-autopilot/references/component-craft.md),
+[preset contracts](../omd-autopilot/references/presets/INDEX.md), and
+[all numbered gates](../omd-autopilot/references/slop-gates.md).
+Company-inspired preset contracts are reusable component guidance, not company
+facts or project authority. Preserve the same graph-first compiler, provenance,
+coverage, exact-preview approval, atomic adoption, and validation requirements.
 
-1. `.codex/data/`
-2. `.claude/data/`
-3. `.opencode/data/`
-4. `node_modules/oh-my-design-cli/data/`
-5. 패키지 개발 root `data/`
-
-- `reference-fingerprints.json` — reference fingerprint (tone keywords, visual theme, antipatterns, signature motion, has_personas, category)
-- `reference-tags.md` — 사람-읽기용 keyword 매트릭스
-- `vocabulary.json` — controlled vocab
-
-채널을 알 수 있으면 그 채널 dir을 우선하되, 서로 다른 dir의 세 파일을 섞지 않는다.
-
-선택된 reference DESIGN.md는 다음 순서로 resolve한다:
-
-<!-- omd:catalog-resolution-order — omd-init/omd-reference-capture SKILL.md + agents/omd-master.md 와 동일 순서 강제. drift guard: test/unit/core/catalog-resolution-order.test.ts -->
-
-1. `.codex/data/references/<id>/DESIGN.md`
-2. `.claude/data/references/<id>/DESIGN.md`
-3. `.opencode/data/references/<id>/DESIGN.md`
-4. `node_modules/oh-my-design-cli/web/references/<id>/DESIGN.md`
-5. `web/references/<id>/DESIGN.md`
-6. `https://oh-my-design.kr/<id>/design.md`
-
-### 3.2 사용자 task 분석 (silent)
-
-- controlled-vocab 키워드 추출 (예: "헬스/웰니스 / calm-blue / 차분" → `[calm, minimal, approachable, warm]`)
-- 명시 brand hint (예: "토스 같은" → `["toss"]`)
-- 카테고리 추측 (Consumer / Productivity / Fintech / AI / Developer Tools / Design Tools / Automotive / Aerospace / SaaS / Enterprise)
-
-### 3.3 점수 계산 (in-head, 결정론적)
-
-- 각 ref의 `tone_keywords` ∩ task keywords → 1점/매칭
-- brand hint match → +5점
-- 카테고리 일치 → +1점
-- top 5 정렬
-
-### 3.4 검증 (hallucination 방지)
-
-추천하는 모든 id는 `reference-fingerprints.json`의 `items[].id`에 **반드시** 존재해야 한다. 없는 id는 만들어내지 않는다.
-
-### 3.5 사용자에게 제시 (자연어 prose)
-
-라벨 없이, 추천을 statement로:
-
-```
-DESIGN.md가 없어서 reference 한 개를 골라 부트스트랩할게요. <task 핵심 한 줄>을 보니 <top1.id>가 가장 잘 맞을 것 같아요 — <visual_theme 핵심 + 매칭 키워드 1-2개를 한 줄로>.
-
-이대로 가시려면 go (또는 <top1.id>).
-다른 후보: <top2.id> (한 줄 이유) · <top3.id> (...) · <top4.id> (...) · <top5.id> (...)
-본인이 아는 다른 reference면 한 줄로 id만 (예: vercel) — reference 카탈로그에 없으면 알려드립니다.
-```
-
-### 3.6 사용자 응답 처리
-
-- `go` 또는 reference id (top-5 안) → 그 id로 master spawn
-- 다른 reference id (top-5 밖이지만 카탈로그 안) → 동일하게 진행
-- 카탈로그에 없는 id → "해당 id는 reference 카탈로그에 없어요. top-5 중에서 골라주세요."
-- `중단` → 종료
-
-### 3.7 라이브 reference capture (선택)
-
-선택된 reference의 라이브 사이트에서 디자인 토큰 + 시각 reference + 폰트를 가져오면 master phase 정확도가 크게 올라간다. 단일 mode (이전의 clone/inspired 갈래는 v1.3.3에서 폐기 — 시각 동일성은 brand creative work을 가져와야 가능하고, 그건 IP 영역).
-
-사용자에게 한 줄로 묻기:
-
-```
-<id> 라이브 자료를 가져올까요? (토큰·구조 cue·폰트·hero screenshot)
-
-가져옴: 컬러·radius·간격·폰트(open-source CDN)·구조 cue(carousel/CTA 모양/nav)·voice register
-가져오지 않음: brand mascot 일러스트·마케팅 사진·로고(사용자 자체 자산으로 시작)
-
-답: yes / skip
-```
-
-`yes` → omd:reference-capture skill 호출 (Skill 툴) → 끝나면 Step 4로
-`skip` → 바로 Step 4
-
-omd:reference-capture는 LICENSE-NOTE.md / attribution.md / fonts.json / structure.json 작성. 모든 brand-identifying 자산은 `assets/_reference/<id>/`에 reference 용도로 보존되며 사용자 product DOM에는 들어가지 않는다.
+Record each decision as a prompt fact, repository fact, approved asset,
+agent-proposed design decision, or unresolved. An exact brand request without
+an authorized source stays blocked. Never replace missing facts with a preset.
+Ask only consequential unresolved decisions in the existing intake budget.
 
 ## Step 3.8 — Surface signal 추출 (master prompt에 한 줄 전달)
 
@@ -560,8 +461,9 @@ blocked handoff에는 이 sidecar를 읽지 않는다. 읽은 뒤에는 전체 �
 protected behavior, unresolved group만 한 단락으로 요약해 전달한다.
 
 이 sidecar의 unknown-means-absent, verified-asset, shared-container, reveal safety,
-responsive 규칙은 regression gate다. `omd-asset-fetch`가 URL·license·fallback의
-단일 source of truth이며 harness가 CDN catalog를 복제하지 않는다.
+responsive 규칙은 regression gate다. Use approved asset sources and the bundled
+asset-curator role for URL, license, attribution, and availability checks.
+No external asset skill or CDN catalog is required.
 
 ### 루프 의사코드
 
@@ -571,7 +473,7 @@ prompt = "<grounding sidecar에서 추린 evidence summary> + <RUN_DIR + task + 
 
 while spawn_count < 12 (safety cap):
   result = Agent({
-    subagent_type: "omd-master",
+    subagent_type: "omd:omd-master", // Claude plugin ID. Other hosts use their roster.
     description: "Run design harness round N",
     prompt: prompt
   })
