@@ -66,9 +66,13 @@ test('install exposes exactly the selected skills and roles, without CLI or comp
   assert.match(read(codex.hooks.slice(2)), /\$\{PLUGIN_ROOT\}/, 'Codex uses its native plugin-root variable');
   assert.deepEqual(readdirSync(join(plugin, 'skills')).sort(), [...selection.skills].sort());
   assert.deepEqual(readdirSync(join(plugin, 'agents')).sort(), selection.agents.map((name) => `${name}.md`).sort());
+  assert.ok(existsSync(join(plugin, 'skills/omd-kr-writer/SKILL.md')));
+  assert.ok(existsSync(join(plugin, 'agents/omd-kr-writer.md')));
+  assert.equal(existsSync(join(plugin, 'skills/omd-humanize')), false);
+  assert.equal(existsSync(join(plugin, 'agents/omd-humanizer.md')), false);
   for (const name of files(plugin)) {
     assert.doesNotMatch(name, /^(?:src|dist|bin|web|data|references|docs|config|integration|node_modules)\//, name);
-    assert.doesNotMatch(name, /(?:^|\/)(?:omd-(?:init|setup|update|sync|kr-writer|locale-adapter|codex-image|landing|aphrodite)|hangul)(?:\/|\.md$)/, name);
+    assert.doesNotMatch(name, /(?:^|\/)(?:omd-(?:init|setup|update|sync|humanize|humanizer|locale-adapter|codex-image|landing|aphrodite)|hangul)(?:\/|\.md$)/, name);
     assert.doesNotMatch(name, /(?:^|\/)(?:AGENTS|CLAUDE|CURRENT_STATE|JOURNAL)\.md$/, name);
     assert.equal(lstatSync(join(plugin, name)).isFile(), true, name);
   }
@@ -92,7 +96,7 @@ test('installed instructions have closed Markdown links, bundled helper paths, a
       assert.ok(existsSync(file), `${name}: missing link: ${target}`);
     }
     if (!name.startsWith('skills/') && !name.startsWith('agents/')) continue;
-    assert.doesNotMatch(text, /omd[:\-](?:kr-writer|locale-adapter|codex-image|asset-fetch|add-reference|init)\b/, name);
+    assert.doesNotMatch(text, /omd[:\-](?:humanize|humanizer|locale-adapter|codex-image|asset-fetch|add-reference|init)\b/, name);
     assert.doesNotMatch(text, /reference-fingerprints\.json|oh-my-design-cli|omd design-md|omd check\b|npx --yes|@latest/, name);
     for (const match of text.matchAll(/\$OMD_ROOT\/((?:scripts|test-v2\/tools)\/[\w/-]+\.(?:cjs|mjs))/g)) {
       assert.ok(existsSync(join(plugin, match[1])), `${name}: missing helper ${match[1]}`);

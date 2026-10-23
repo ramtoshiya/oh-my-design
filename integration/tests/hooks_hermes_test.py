@@ -81,6 +81,8 @@ class HermesDispatch(HermesFixture):
             "omd-remember": '---\nname: omd-remember\ndescription: "Capture explicit corrections"\ndisable-model-invocation: true\nmetadata:\n  internal: true\n---\n# Remember\nCapture the preference.\n',
             "omd-harness": '# Harness\nDiscover the project with user approval.\n',
             "omd-init": '---\nname: omd-init\ndescription: excluded\n---\nExcluded\n',
+            "omd-kr-writer": '---\nname: omd-kr-writer\ndescription: Korean writing with voice presets\nuser-invocable: true\n---\n# Korean writer\nWrite Korean prose.\n',
+            "omd-humanize": '---\nname: omd-humanize\ndescription: excluded\n---\nExcluded\n',
         }.items():
             target = plugin / "skills" / name / "SKILL.md"
             target.parent.mkdir(parents=True)
@@ -107,6 +109,8 @@ class HermesDispatch(HermesFixture):
         self.assertIn("omd:omd-remember", skills)
         self.assertIn("omd:omd-harness", skills)
         self.assertNotIn("omd:omd-init", skills)
+        self.assertIn("omd:omd-kr-writer", skills)
+        self.assertNotIn("omd:omd-humanize", skills)
         metadata = skills["omd:omd-remember"]["frontmatter"]
         self.assertIs(metadata["disable-model-invocation"], True)
         self.assertEqual(metadata["metadata"], {"internal": True})

@@ -1,6 +1,6 @@
 ---
 name: omd-orchestrator
-description: "Coordinates advisory design, UX writing, humanization, slop audit, designer review, and final QA. The caller owns implementation and locale drafts. Keeps a two-round revision cap per critic gate."
+description: "Coordinates advisory design, UX writing, Korean drafting, slop audit, designer review, and final QA. The caller owns implementation and locale drafts. Keeps a two-round revision cap per critic gate."
 metadata:
   internal: true
 ---
@@ -45,8 +45,8 @@ Core graph is canonical. Otherwise use the standalone DESIGN.md contract.
 | --- | --- |
 | UX copy strategy | `omd-ux-writer` |
 | UI microcopy | `omd-microcopy` |
-| Writing or localization | Caller drafts using the brief and `content-locales` |
-| Naturalness or translation artifacts | `omd-humanizer` after the caller's draft |
+| Korean writing or revision | `omd-kr-writer` drafts using the brief and project voice |
+| Other writing or localization | Caller drafts using the brief and `content-locales` |
 | Context-free UI repetition | `omd-slop-auditor` |
 | Interaction, focus, responsive behavior | `omd-ux-engineer` |
 | Visual and system consistency | `omd-designer-review` |
@@ -93,8 +93,10 @@ visual equity ledgers. Reject suggestions without original-task authority.
 1. Caller writes or localizes only the requested artifacts using the brief,
    approved sources, and DESIGN.md `content-locales` contract. Each locale is
    independent. Preserve facts, numbers, links, IDs, code, and protected spans.
-2. When writing needs post-editing, run `omd-humanizer` for each locale. It does
-   not invent facts or change project authority.
+2. For Korean writing or revision, use `omd-kr-writer` with the requested
+   `preset_id` (default `toss-tech-design`). It returns a draft artifact for the
+   caller to apply. Explicit instructions and project voice override presets.
+   Other locales remain caller-owned. No separate localization worker is needed.
 3. Run `omd-designer-review` on the actual artifact and current DESIGN.md.
    The caller revises it, with a maximum of two review rounds.
 4. Run `omd-final-qa` read-only using its complete eight-item rubric. The caller

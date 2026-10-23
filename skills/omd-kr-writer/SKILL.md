@@ -8,7 +8,18 @@ metadata:
 
 # omd:kr-writer
 
-oh-my-design의 한국어 본문 작성 스킬. **preset_id 인자**로 12개 voice 중 선택.
+한국어 본문을 작성하거나 다듬는다. **preset_id 인자**로 12개 voice 중 선택.
+
+## Project contract {:#project-contract}
+
+Read the user's brief, source material, approved nearby writing, and any
+existing DESIGN.md and pending .omd/preferences.md before drafting. Do not
+create a design system merely to write text. Explicit instructions and project
+voice take priority over presets. Use the requested output path and schema.
+Preset lengths describe full articles, not mandatory expansion of a short
+rewrite or UI label. Preserve supplied facts, numbers, names, URLs, commands,
+code, and direct quotations. Do not invent author identity, experience, claims,
+citations, or assets to meet a length target.
 
 ## 0. preset_id 인자
 
@@ -26,7 +37,7 @@ inputs:
 
 | # | preset_id | 종결 | 분량 (한글) | 용도 |
 |---|---|---|---|---|
-| 1 | `toss-tech-design` ⭐ (default) | 해요체 -요 | 5,500~7,000자 | omd 블로그 본문, 디자인 deep-dive |
+| 1 | `toss-tech-design` ⭐ (default) | 해요체 -요 | 5,500~7,000자 | 디자인 블로그 본문, 디자인 deep-dive |
 | 2 | `karrot-neighborly` | 해요체 + 동네 lexicon | 3,000~5,000자 | 마케팅, 커뮤니티 글 |
 | 3 | `brunch-maker-popular` | 해요체 80% + 회상 `-했다` | 4,000~6,000자 | 회고, 포스트모템, 메이커 에세이 |
 | 4 | `naver-d2-engineering` | 하십시오체 -합니다 | 자유 | 엔지니어링 분석 글 |
@@ -73,7 +84,7 @@ omd 디폴트는 **해요체**. 격식이 필요하면 하십시오체. 학술/�
 
 ## Default preset (toss-tech-design)
 
-oh-my-design 블로그의 한국어 본문을 **Toss Tech 디자인 카테고리** 수준의 voice로 작성. Brunch와 당근 미디엄도 보조 참고.
+한국어 본문을 **Toss Tech 디자인 카테고리** 수준의 voice로 작성. Brunch와 당근 미디엄도 보조 참고.
 
 ## 1. Voice DNA — 한국 디자인 블로그 명문 공통 패턴
 
@@ -188,14 +199,14 @@ oh-my-design 블로그의 한국어 본문을 **Toss Tech 디자인 카테고리
 ## 7. 실행 절차
 
 1. brief, source material, required facts, output path를 확인한다. 없는 저자 경험·수치·인용·링크는 만들지 않는다.
-2. oh-my-design production blog 글은 한국어를 canonical로 작성하고 `web/src/content/blog/<slug>/ko.md`에 둔다. 영문 초안이 입력이어도 사실을 보존해 한국어 독자를 위한 독립 문장으로 다시 쓴다.
-3. production blog frontmatter는 `title`, `description`, `date`, `tags` 네 필드만 쓴다. `date`는 `YYYY-MM-DD`, `tags`는 비어 있지 않은 inline list다. `title_ko`, `subtitle_ko`, `locale`, `voice_preset` 같은 추가 필드는 strict parser가 거부한다.
+2. 요청된 출력 경로와 프로젝트의 문서 스키마를 따른다. 영문 초안이 입력이어도 사실을 보존해 한국어 독자를 위한 독립 문장으로 다시 쓴다.
+3. frontmatter는 요청된 스키마에 있을 때만 쓴다. 특정 웹사이트의 경로나 필드를 강제하지 않는다.
 4. H2 헤더와 본문을 선택한 preset에 맞춰 작성한다. default에서는 종결어미를 `-요` 계열로 통일한다.
 5. 실제 에셋이 제공된 경우에만 본문 주장과 연결해 배치한다. 에셋이 없으면 placeholder 대신 handoff에 필요 항목을 남긴다.
 6. 글의 핵심 판단으로 마무리하고 사실·frontmatter·링크·이미지 경로를 다시 확인한다.
-7. 영어판이 필요한 경우 한국어 canonical 확정 뒤 locale-adapter가 별도 `en.md`를 만든다. kr-writer는 영어판을 한국어의 원본으로 취급하지 않는다.
+7. 다른 언어판이 필요하면 caller가 프로젝트의 source locale과 요청된 경로에 맞춰 작성한다. 별도 locale worker는 필요하지 않다.
 
-production blog가 아닌 문서에는 요청된 출력 스키마를 따른다. 위 네 필드 frontmatter를 임의로 덧붙이지 않는다.
+한국어가 모든 프로젝트의 canonical이라고 가정하지 않는다.
 
 ## 8. Quality bar
 
@@ -204,7 +215,7 @@ production blog가 아닌 문서에는 요청된 출력 스키마를 따른다. 
 - 선택한 preset의 분량과 종결어미 범위를 지킨다.
 - 이미지 placeholder 0건. 실제 에셋이 있을 때만 의미 있는 alt와 함께 참조한다.
 - 제공되지 않은 저자 신원·경험·수치·인용·CTA 0건.
-- production blog라면 frontmatter가 정확히 네 필드이고 한국어 canonical 본문이 비어 있지 않아야 한다.
+- frontmatter와 출력 경로가 요청된 프로젝트 스키마와 일치해야 한다.
 
 default `toss-tech-design` 디자인 분석 글:
 
@@ -284,4 +295,4 @@ toss-tech-design 외 preset 호출 시 아래 요약 spec이 §1 (voice) / §5 (
 
 ---
 
-이 스킬은 oh-my-design 블로그 한국어 본문의 **단일 source of truth voice guide**. 모든 KR 글은 이 guide를 따른다.
+프로젝트 voice와 사용자 지시가 preset보다 우선한다.

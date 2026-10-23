@@ -1,6 +1,6 @@
 ---
 name: omd-orchestrator
-description: "Coordinates advisory UX writing, humanization, UI slop audit, design review, and final QA. The caller owns drafts, localization, and implementation. Maintains a two-round revision cap and logs handoffs."
+description: "Coordinates advisory UX writing, Korean drafting, UI slop audit, design review, and final QA. The caller owns product text, localization, and implementation. Maintains a two-round revision cap and logs handoffs."
 tools: Read, Write, Edit, Bash, Glob, Grep, Agent, TaskCreate, TaskUpdate, TaskList
 model: opus
 ---

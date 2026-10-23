@@ -175,13 +175,16 @@ test('preference persistence rejects symlinks and nonregular targets at the brid
 
 test('activation routes to installed skills only and never bootstraps files', t => {
   const f = fixture(t);
-  fs.mkdirSync(path.join(f.plugin, 'skills/omd-init'), { recursive: true });
-  fs.writeFileSync(path.join(f.plugin, 'skills/omd-init/SKILL.md'), 'excluded');
+  for (const name of ['omd-init', 'omd-humanize', 'omd-kr-writer']) {
+    fs.mkdirSync(path.join(f.plugin, 'skills', name), { recursive: true });
+    fs.writeFileSync(path.join(f.plugin, 'skills', name, 'SKILL.md'), name);
+  }
   const context = invoke(f, 'TurnStart', { session_start: true, prompt: 'Design a card layout' });
   assert.match(context, /Use installed omd:omd-apply/);
   assert.match(context, /bounded setup, reuse, or explicitly authorized surface-local scope/);
   assert.match(context, /Pending preferences override DESIGN.md/);
-  assert.doesNotMatch(context, /omd:init|omd:omd-init|kr-writer|locale-adapter/);
+  assert.match(context, /omd:omd-kr-writer/);
+  assert.doesNotMatch(context, /omd:init|omd:omd-init|humanize|locale-adapter/);
   assert.deepEqual(fs.readdirSync(f.cwd), []);
   assert.equal(invoke(f, 'UserPromptSubmit', { prompt: 'Search for cardinal numbers' }), '');
   design(f);

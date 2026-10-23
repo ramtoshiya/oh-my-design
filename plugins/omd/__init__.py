@@ -10,7 +10,7 @@ from threading import Lock
 ROOT = Path(__file__).resolve().parent
 SKILLS = (
     "omd-apply", "omd-remember", "omd-learn", "omd-feel", "omd-restraint",
-    "omd-slop-audit", "omd-humanize", "omd-autopilot", "omd-harness",
+    "omd-slop-audit", "omd-kr-writer", "omd-autopilot", "omd-harness",
     "omd-designer-review", "omd-final-qa", "omd-orchestrator",
 )
 

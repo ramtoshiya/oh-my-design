@@ -9,7 +9,7 @@ const { edits } = require('./lib/native-tools.cjs');
 const root = path.resolve(__dirname, '..');
 const selected = new Set([
   'omd-apply', 'omd-remember', 'omd-learn', 'omd-feel', 'omd-restraint',
-  'omd-slop-audit', 'omd-humanize', 'omd-autopilot', 'omd-harness',
+  'omd-slop-audit', 'omd-kr-writer', 'omd-autopilot', 'omd-harness',
   'omd-designer-review', 'omd-final-qa', 'omd-orchestrator',
 ]);
 

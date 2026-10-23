@@ -15,8 +15,10 @@ or a separate model provider. Node.js 22 or later runs the bundled Core helpers.
 - `omd-feel`, `omd-restraint`, and `omd-slop-audit` provide interaction craft,
   measured restraint, and contextual pattern review. Autopilot's full numbered
   gates, component-craft, and generic preset contracts are included.
-- `omd-humanize` post-edits the caller's writing and localization. It does not
-  require separate writing or locale workers. Review roles remain advisory.
+- `omd-kr-writer` writes or revises Korean prose with 12 voice presets, using
+  `toss-tech-design` by default. Project voice and explicit instructions take
+  priority over presets. Other locales remain caller-owned. No separate locale
+  worker is required. Review roles remain advisory.
 
 Names are preserved. In Claude Code the plugin namespace is `omd`, so invoke
 `/omd:omd-apply` or `/omd:omd-harness`. Native agent IDs use

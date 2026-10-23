@@ -132,7 +132,7 @@ severity는 다음처럼 쓴다.
 
 - `omd:designer-review`: 브랜드 토큰과 시각 일관성
 - `omd:feel`: motion·target·contrast·CLS 같은 측정 가능한 interface detail
-- `omd:humanize`: locale별 문장과 UX copy 후편집
+- `omd:omd-kr-writer`: 한국어 본문 작성과 수정. 다른 locale은 caller가 검증한다.
 - `omd:slop-audit`: 제품 맥락 없는 **패턴 수렴과 cluster**
 
 ## 금지
